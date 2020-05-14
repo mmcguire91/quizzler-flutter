@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'questions.dart';
 
 void main() => runApp(Quizzler());
 
@@ -29,10 +30,14 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List scoreKeeper = [];
 
-  List<String> questions = [
-    'You can lead a cow down stairs but not up stairs.',
-    'Approximately one quarter of human bones are in the feet.',
-    'A slug\'s blood is green.'
+  List<Question> questionKey = [
+    Question(q: 'You can lead a cow down stairs but not up stairs.', a: false),
+    Question(
+        q: 'Approximately one quarter of human bones are in the feet.',
+        a: true),
+    Question(
+        q: 'Approximately one quarter of human bones are in the feet.',
+        a: true),
   ];
 
   int questionNum = 0;
@@ -49,7 +54,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                questions[questionNum],
+                questionKey[questionNum].questionText,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -74,8 +79,14 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked true.
+                bool correctAnswer = questionKey[questionNum].questionAnswer;
+                if (correctAnswer == true) {
+                  print('User selected correct answer');
+                } else {
+                  print('User selected wrong answer');
+                }
                 setState(() {
-                  questionNum++;
+                  questionNum++; // display the next question
                 });
               },
             ),
@@ -95,8 +106,14 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked false.
+                bool correctAnswer = questionKey[questionNum].questionAnswer;
+                if (correctAnswer == false) {
+                  print('User selected correct answer');
+                } else {
+                  print('User selected wrong answer');
+                }
                 setState(() {
-                  questionNum++;
+                  questionNum++; // display the next question
                 });
               },
             ),
