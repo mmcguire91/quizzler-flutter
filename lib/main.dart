@@ -1,7 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'questions.dart';
+import 'Quiz_Brain.dart';
+
+QuizBrain quizBrain = QuizBrain();
 
 void main() => runApp(Quizzler());
 
@@ -30,18 +32,6 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List scoreKeeper = [];
 
-  List<Question> questionKey = [
-    Question(q: 'You can lead a cow down stairs but not up stairs.', a: false),
-    Question(
-        q: 'Approximately one quarter of human bones are in the feet.',
-        a: true),
-    Question(
-        q: 'Approximately one quarter of human bones are in the feet.',
-        a: true),
-  ];
-
-  int questionNum = 0;
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -54,7 +44,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                questionKey[questionNum].questionText,
+                quizBrain.getQuestionText(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -79,14 +69,14 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked true.
-                bool correctAnswer = questionKey[questionNum].questionAnswer;
+                bool correctAnswer = quizBrain.getQuestionAnswer();
                 if (correctAnswer == true) {
                   print('User selected correct answer');
                 } else {
                   print('User selected wrong answer');
                 }
                 setState(() {
-                  questionNum++; // display the next question
+                  quizBrain.nextQuestion(); // display the next question
                 });
               },
             ),
@@ -106,14 +96,14 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked false.
-                bool correctAnswer = questionKey[questionNum].questionAnswer;
+                bool correctAnswer = quizBrain.getQuestionAnswer();
                 if (correctAnswer == false) {
                   print('User selected correct answer');
                 } else {
                   print('User selected wrong answer');
                 }
                 setState(() {
-                  questionNum++; // display the next question
+                  quizBrain.nextQuestion(); // display the next question
                 });
               },
             ),
