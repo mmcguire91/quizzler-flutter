@@ -1,11 +1,10 @@
 import 'questions.dart';
 
 class QuizBrain {
-  int _questionNum = 0;
+  int _questionNum = 0; // start quiz at question 0
 
   List<Question> _questionKey = [
     Question('You can lead a cow down stairs but not up stairs.', false),
-    Question('Approximately one quarter of human bones are in the feet.', true),
     Question('Approximately one quarter of human bones are in the feet.', true),
     Question('Buzz Aldrin\'s mother\'s maiden name was \"Moon\".', true),
     Question('It is illegal to pee in the Ocean in Portugal.', true),
@@ -32,15 +31,30 @@ class QuizBrain {
 
   void nextQuestion() {
     if (_questionNum < _questionKey.length - 1) {
-      _questionNum++;
+      //if we have not reached final question
+      _questionNum++; //method to send to next question
     }
   }
 
   String getQuestionText() {
-    return _questionKey[_questionNum].questionText;
+    return _questionKey[_questionNum].questionText; // retrieve question
   }
 
   bool getQuestionAnswer() {
-    return _questionKey[_questionNum].questionAnswer;
+    return _questionKey[_questionNum].questionAnswer; // retrieve answer
   }
+
+  bool isFinished() {
+    if (_questionNum >= _questionKey.length - 1) {
+      //if we have reached the final question
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void reset() {
+    _questionNum = 0;
+  } // reset the quiz to question 1
+
 }

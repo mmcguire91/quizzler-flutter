@@ -1,6 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'Quiz_Brain.dart';
 
 QuizBrain quizBrain = QuizBrain();
@@ -30,7 +29,49 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  List scoreKeeper = [];
+  List<Icon> scoreKeeper = [];
+
+  void checkAnswer(bool userPickedAnswer) {
+    bool correctAnswer = quizBrain.getQuestionAnswer();
+
+    setState(() {
+      if (quizBrain.isFinished() == true) {
+        Alert(
+          context: context,
+          title: "End of Quiz",
+          desc: "You have reached the end of the quiz.",
+          buttons: [
+            DialogButton(
+                child: Text(
+                  "Restart quiz",
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+                width: 120,
+                onPressed: () {
+                  Navigator.pop(context);
+//                  quizBrain.reset();
+//                  scoreKeeper = [];
+                })
+          ],
+        ).show();
+        quizBrain.reset();
+        scoreKeeper = [];
+      } else {
+        if (correctAnswer == true) {
+          print('User selected correct answer');
+          scoreKeeper.add(
+            Icon(Icons.check, color: Colors.green),
+          );
+        } else if (correctAnswer == false) {
+          print('User selected wrong answer');
+          scoreKeeper.add(
+            Icon(Icons.close, color: Colors.red),
+          );
+        }
+      }
+      quizBrain.nextQuestion(); // display the next question
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,15 +110,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked true.
-                bool correctAnswer = quizBrain.getQuestionAnswer();
-                if (correctAnswer == true) {
-                  print('User selected correct answer');
-                } else {
-                  print('User selected wrong answer');
-                }
-                setState(() {
-                  quizBrain.nextQuestion(); // display the next question
-                });
+                checkAnswer(true);
               },
             ),
           ),
@@ -96,30 +129,15 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked false.
-                bool correctAnswer = quizBrain.getQuestionAnswer();
-                if (correctAnswer == false) {
-                  print('User selected correct answer');
-                } else {
-                  print('User selected wrong answer');
-                }
-                setState(() {
-                  quizBrain.nextQuestion(); // display the next question
-                });
+                checkAnswer(false);
               },
             ),
           ),
         ),
-        //TODO: Add a Row here as your score keeper
         Row(
-          children: <Widget>[],
+          children: scoreKeeper,
         ),
       ],
     );
   }
 }
-
-/*
-question1: 'You can lead a cow down stairs but not up stairs.', false,
-question2: 'Approximately one quarter of human bones are in the feet.', true,
-question3: 'A slug\'s blood is green.', true,
-*/
